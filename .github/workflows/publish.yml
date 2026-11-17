@@ -19,7 +19,17 @@ jobs:
           node-version: 24
           registry-url: https://registry.npmjs.org
       - run: npm test
+      - name: Check npm token
+        id: token
+        run: |
+          if [ -z "${NODE_AUTH_TOKEN}" ]; then
+            echo "NPM_TOKEN is not configured; skipping npm publish"
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          fi
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Publish to npm
+        if: steps.token.outputs.skip != 'true'
         run: npm publish --access public --provenance
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
