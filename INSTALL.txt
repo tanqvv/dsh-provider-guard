@@ -1,0 +1,43 @@
+dsh-provider-guard 安装 / 验收（标准插件）
+
+1) 作为 bundle 装进 profile，任选一种来源：
+
+   npm（发布后）：
+     dsh plugin --profile desktop add dsh-provider-guard
+     dsh plugin --profile web add dsh-provider-guard
+
+   GitHub（无需 npm）：
+     dsh plugin --profile desktop add github:tanqvv/dsh-provider-guard#v0.2.3
+     dsh plugin --profile web add github:tanqvv/dsh-provider-guard#v0.2.3
+
+   本地 tarball：
+     dsh plugin --profile desktop add /path/to/dsh-provider-guard-0.2.3.tgz
+     dsh plugin --profile web add /path/to/dsh-provider-guard-0.2.3.tgz
+
+2) 可选：写 profile 覆盖（当前 provider/model、端点、审计路径）：
+   node /path/to/dsh-provider-guard/scripts/install.mjs --apply --bundle
+   或双击 /path/to/dsh-provider-guard/scripts/install.command
+
+3) 桌面端通常热加载；dsh web / VS Code 面板重启后生效。
+
+4) 验收：
+   在会话里让模型调用 provider_guard_status
+   应看到：当前生效: opencode-go / deepseek-v4.1-flash，端点: opencode.ai
+   让模型调用 web_search：应报 PROVIDER_HOST_BLOCKED（DeepSeek 端点被拦）
+   web_fetch https://example.com：应成功（普通流量不受影响）
+
+5) 不会自动切换：网络/额度/鉴权失败时只重试同一家，失败后聊天框报错停止；
+   如果主循环试图换到别的供应商，会报 PROVIDER_AUTO_SWITCH_BLOCKED。
+
+6) 切换到 DeepSeek 供应商后：
+   - api.deepseek.com 自动放行
+   - opencode.ai 变成其他供应商端点，被拦
+   - 主循环请求仍被信任，不需要重启
+
+7) 卸载：
+   node /path/to/dsh-provider-guard/scripts/install.mjs --uninstall --apply
+   dsh plugin --profile desktop remove dsh-provider-guard
+   dsh plugin --profile web remove dsh-provider-guard
+
+注意：这一版不是全网络白名单。npm/微信/dsh-remote/普通网页都放行；
+只拦“另一家模型供应商”的端点，越界的模型调用默认停住并报错。

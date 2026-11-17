@@ -1,0 +1,62 @@
+{
+  "name": "dsh-provider-guard",
+  "version": "0.2.3",
+  "description": "DSH model-provider affinity guard: model calls follow the selected provider, automatic switching/fallback is stopped, other providers' endpoints are blocked, ordinary traffic is left alone.",
+  "type": "module",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib/index.d.ts",
+      "default": "./lib/index.js"
+    },
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "cordis.patch.yml",
+    "README.md",
+    "README.en.md",
+    "INSTALL.txt",
+    "LICENSE",
+    "CHANGELOG.md",
+    "scripts"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "scripts": {
+    "test": "node --test test/*.test.mjs",
+    "prepublishOnly": "node --test test/*.test.mjs",
+    "install:profiles": "node scripts/install.mjs --apply --bundle"
+  },
+  "engines": {
+    "node": "^22.19.0 || >=24.0.0"
+  },
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "deepseek-harness",
+    "provider",
+    "model-routing",
+    "guard",
+    "llm",
+    "no-auto-switch"
+  ],
+  "license": "MIT",
+  "author": "tanqvv",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tanqvv/dsh-provider-guard.git"
+  },
+  "homepage": "https://github.com/tanqvv/dsh-provider-guard#readme",
+  "bugs": {
+    "url": "https://github.com/tanqvv/dsh-provider-guard/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

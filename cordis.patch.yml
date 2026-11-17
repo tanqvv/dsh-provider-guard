@@ -1,0 +1,15 @@
+# dsh-provider-guard bundle patch.
+#
+# 默认跟随 UI 当前选择；跨供应商的辅助模型调用默认停住并报错，不自动改道；
+# 只拦其他供应商的模型端点，不拦 npm/微信/远程控制等普通流量。
+#
+- insert:
+    - id: provider-guard
+      name: 'dsh-provider-guard'
+      config:
+        followSelection: true
+        onForeignProvider: 'block'
+        blockAutoSwitch: true
+        blockForeignProviderHosts: true
+        mode: 'enforce'
+        logAllowed: false
