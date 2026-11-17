@@ -28,8 +28,20 @@ jobs:
           fi
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Verify npm identity
+        if: steps.token.outputs.skip != 'true'
+        run: npm whoami
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Publish to npm
         if: steps.token.outputs.skip != 'true'
         run: npm publish --access public --provenance
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Verify publication
+        if: steps.token.outputs.skip != 'true'
+        run: |
+          sleep 5
+          npm view dsh-provider-guard version
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
