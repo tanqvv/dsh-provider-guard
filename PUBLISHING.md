@@ -51,3 +51,10 @@ triggers the freeze.
 Once the package exists, configure an npm Trusted Publisher for this repository
 and workflow so future releases use GitHub Actions OIDC instead of a long-lived
 token. The `id-token: write` permission is already present in `publish.yml`.
+
+## Token policy (2026)
+
+Granular access tokens that bypass 2FA can no longer perform account, org, or
+package management actions. Direct publishing with such a token still works
+until January 2027; move to Trusted Publishing (OIDC) or staged publishing
+before then.
